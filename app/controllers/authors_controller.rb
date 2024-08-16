@@ -48,6 +48,12 @@ class AuthorsController < ApplicationController
   def new_author
     @new_author ||=
       Author
+        .joins(:courses)
+        .where.not(id: @author.id)
+        .where(courses: { competences: deleting_author_competences })
+        .first ||
+
+      Author
         .where.not(id: @author.id)
         .first
   end
@@ -58,5 +64,12 @@ class AuthorsController < ApplicationController
 
   def author_params
     params.require(:author).permit(:name)
+  end
+
+  def deleting_author_competences
+    @deleting_author_competences ||=
+      Competence
+        .joins(:courses)
+        .where(courses: { author_id: @author.id })
   end
 end
