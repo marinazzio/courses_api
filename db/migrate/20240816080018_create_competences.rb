@@ -1,7 +1,7 @@
 class CreateCompetences < ActiveRecord::Migration[7.2]
   def change
     create_table :competences do |t|
-      t.string :name
+      t.string :title
       t.text :description
 
       t.timestamps

@@ -12,6 +12,9 @@ gem 'rswag-ui'
 gem 'pg'
 
 group :development, :test do
+  gem 'byebug'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
