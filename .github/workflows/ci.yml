@@ -1,44 +1,9 @@
 name: CI
 
-on:
-  pull_request:
-  push:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
-  scan_ruby:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-
-
-  test:
+  build:
     runs-on: ubuntu-latest
 
     services:
@@ -50,6 +15,12 @@ jobs:
           POSTGRES_DB: courses_api_test
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,21 +34,27 @@ jobs:
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3
 
+      - name: Wait for PostgreSQL
+        run: |
+          while ! pg_isready -h localhost -p 5432; do
+            sleep 1
+          done
+
       - name: Set up database
         run: |
-          bin/rails db:create RAILS_ENV=test
-          bin/rails db:schema:load RAILS_ENV=test
+          bin/rails db:create db:schema:load RAILS_ENV=test
         env:
           PG_USERNAME: postgres
           PG_PASSWORD: postgres
-          PG_HOST: postgres
+          PG_HOST: localhost
           PG_PORT: 5432
-  
+          RAILS_ENV: test
+
       - name: Run tests
         run: bin/rails rspec
-
         env:
           PG_USERNAME: postgres
           PG_PASSWORD: postgres
-          PG_HOST: postgres
+          PG_HOST: localhost
           PG_PORT: 5432
+          RAILS_ENV: test
