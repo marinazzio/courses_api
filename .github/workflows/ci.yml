@@ -3,11 +3,42 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - master
+    branches: [ master ]
 
 jobs:
-  build:
+  scan_ruby:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Lint code for consistent style
+        run: bin/rubocop -f github
+
+
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -46,19 +77,19 @@ jobs:
 
       - name: Set up database
         run: |
-          bin/rails db:create db:schema:load RAILS_ENV=test
+          bin/rails db:create RAILS_ENV=test
+          bin/rails db:schema:load RAILS_ENV=test
         env:
           PG_USERNAME: postgres
           PG_PASSWORD: postgres
           PG_HOST: localhost
           PG_PORT: 5432
-          RAILS_ENV: test
-
+  
       - name: Run tests
         run: bin/rake spec
+
         env:
           PG_USERNAME: postgres
           PG_PASSWORD: postgres
           PG_HOST: localhost
           PG_PORT: 5432
-          RAILS_ENV: test
