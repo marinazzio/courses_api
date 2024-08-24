@@ -1,5 +1,5 @@
 class CompetencesController < ApplicationController
-  before_action :set_competence, only: [:show, :update, :destroy]
+  before_action :set_competence, only: [ :show, :update, :destroy ]
 
   def index
     @competences = Competence.all
@@ -32,7 +32,7 @@ class CompetencesController < ApplicationController
   def destroy
     @competence.destroy
 
-    render json: { message: 'Competence deleted' }, status: :no_content
+    render json: { message: "Competence deleted" }, status: :no_content
   end
 
   private

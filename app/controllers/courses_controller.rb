@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :update, :destroy]
+  before_action :set_course, only: [ :show, :update, :destroy ]
 
   def index
     @courses = Course.all
@@ -32,7 +32,7 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
 
-    render json: { message: 'Course deleted' }, status: :no_content
+    render json: { message: "Course deleted" }, status: :no_content
   end
 
   private

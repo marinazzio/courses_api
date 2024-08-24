@@ -38,7 +38,7 @@ RSpec.describe 'Courses endpoints', type: :request do
             title: { type: :string },
             author_id: { type: :integer }
           },
-          required: ['title']
+          required: [ 'title' ]
         }
       )
 
@@ -97,7 +97,7 @@ RSpec.describe 'Courses endpoints', type: :request do
           properties: {
             title: { type: :string }
           },
-          required: ['title']
+          required: [ 'title' ]
         }
       )
 
