@@ -1,6 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -51,7 +55,7 @@ jobs:
           RAILS_ENV: test
 
       - name: Run tests
-        run: bin/rails rspec
+        run: bin/rake spec
         env:
           PG_USERNAME: postgres
           PG_PASSWORD: postgres
