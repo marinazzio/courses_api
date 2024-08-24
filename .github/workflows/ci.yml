@@ -67,7 +67,12 @@ jobs:
         run: |
           bin/rails db:create RAILS_ENV=test
           bin/rails db:schema:load RAILS_ENV=test
-
+        env:
+          PG_USERNAME: postgres
+          PG_PASSWORD: postgres
+          PG_HOST: postgres
+          PG_PORT: 5432
+  
       - name: Run tests
         run: bin/rails rspec
 
