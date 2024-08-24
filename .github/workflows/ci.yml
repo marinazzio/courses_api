@@ -49,11 +49,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: courses_api_test
 
-    env:
-      PG_USERNAME: postgres
-      PG_PASSWORD: postgres
-      PG_HOST: postgres
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -75,3 +70,8 @@ jobs:
       - name: Run tests
         run: bin/rails rspec
 
+        env:
+          PG_USERNAME: postgres
+          PG_PASSWORD: postgres
+          PG_HOST: postgres
+          PG_PORT: 5432
