@@ -39,7 +39,7 @@ RSpec.describe 'Competences endpoints', type: :request do
           properties: {
             title: { type: :string }
           },
-          required: ['title']
+          required: [ 'title' ]
         }
       )
 
@@ -98,7 +98,7 @@ RSpec.describe 'Competences endpoints', type: :request do
           properties: {
             title: { type: :string }
           },
-          required: ['title']
+          required: [ 'title' ]
         }
       )
 

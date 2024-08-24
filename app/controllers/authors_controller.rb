@@ -1,5 +1,5 @@
 class AuthorsController < ApplicationController
-  before_action :set_author, only: [:show, :update, :destroy]
+  before_action :set_author, only: [ :show, :update, :destroy ]
 
   def index
     @authors = Author.all
@@ -40,7 +40,7 @@ class AuthorsController < ApplicationController
       @author.destroy
     end
 
-    render json: { message: 'Author deleted' }, status: :no_content
+    render json: { message: "Author deleted" }, status: :no_content
   end
 
   private

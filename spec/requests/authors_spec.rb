@@ -38,7 +38,7 @@ RSpec.describe 'Authors endpoints', type: :request do
           properties: {
             name: { type: :string }
           },
-          required: ['name']
+          required: [ 'name' ]
         }
       )
 
@@ -98,7 +98,7 @@ RSpec.describe 'Authors endpoints', type: :request do
           properties: {
             name: { type: :string }
           },
-          required: ['name']
+          required: [ 'name' ]
         }
       )
 
