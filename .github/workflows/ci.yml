@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   scan_ruby:
@@ -47,7 +47,12 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test
+          POSTGRES_DB: courses_api_test
+
+    env:
+      PG_USERNAME: postgres
+      PG_PASSWORD: postgres
+      PG_HOST: postgres
 
     steps:
       - name: Checkout code
